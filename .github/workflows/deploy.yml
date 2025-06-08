@@ -12,15 +12,10 @@ jobs:
     - name: Checkout Repo
       uses: actions/checkout@v2
 
-    - name: Change to cgi-task3 directory
-      run: cd cgi-task3
-
     - name: Build Docker image
-      working-directory: ./cgi-task3
       run: docker build -t cgi-nginx -f Dockerfile .
 
     - name: Run Docker container
-      working-directory: ./cgi-task3
       run: |
         docker stop cgi-nginx || true
         docker rm cgi-nginx || true
