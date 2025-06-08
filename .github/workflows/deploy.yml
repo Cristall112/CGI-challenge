@@ -1,4 +1,4 @@
-name: Auto Deploy NGINX
+name: Deploy NGINX Webserver
 
 on:
   push:
@@ -7,16 +7,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Build Docker image
-      run: docker build -t cgi-nginx -f Dockerfile .
+      - name: Build Docker image
+        run: docker build -t cgi-nginx .
 
-    - name: Run Docker container
-      run: |
-        docker stop cgi-nginx || true
-        docker rm cgi-nginx || true
-        docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
+      - name: Run container
+        run: |
+          docker stop cgi-nginx || true
+          docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
