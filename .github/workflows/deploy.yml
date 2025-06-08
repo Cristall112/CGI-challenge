@@ -17,7 +17,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Build Docker image
-      run:  docker build -t cgi-nginx -f Dockerfile .
+      run:  docker build -t cgi-nginx -f ${{ github.workspace }}/Dockerfile ${{ github.workspace }}
 
 
     - name: Run Docker container
