@@ -1,15 +1,16 @@
-name: Deploy NGINX Webserver
-
-on:
-  push:
-    branches: [ main ]
+name: Deploy NGINX
+on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Verify files
+        run: |
+          ls -la
+          ls -la html/
 
       - name: Build Docker image
         run: docker build -t cgi-nginx .
