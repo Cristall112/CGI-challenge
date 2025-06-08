@@ -17,7 +17,8 @@ jobs:
       uses: docker/setup-buildx-action@v2
 
     - name: Build Docker image
-      run: docker build -t cgi-nginx .
+      run:  docker build -t cgi-nginx -f Dockerfile .
+
 
     - name: Run Docker container
       run: |
