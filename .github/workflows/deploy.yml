@@ -1,37 +1,21 @@
-name: Deploy NGINX Container
+nname: Deploy NGINX
 
-on:
-  push:
-    branches: [ main ]
+on: [push]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
-      # Step 1: Checkout code
       - uses: actions/checkout@v3
 
-      # Step 2: Cleanup any existing container
-      - name: Cleanup previous container
+      - name: Verify files
         run: |
-          docker stop cgi-nginx || true
-          docker rm -f cgi-nginx || true
+          echo "Current directory structure:"
+          ls -R
+          [ -f Dockerfile ] || { echo "ERROR: Dockerfile missing"; exit 1; }
+          [ -d html ] || { echo "ERROR: html folder missing"; exit 1; }
 
-      # Step 3: Build Docker image
-      - name: Build image
-        run: docker build -t cgi-nginx .
-
-      # Step 4: Run container
-      - name: Run container
+      - name: Build and deploy
         run: |
-          docker run -d \
-            -p 8080:80 \
-            --name cgi-nginx \
-            cgi-nginx
-
-      # Step 5: Verify deployment
-      - name: Verify
-        run: |
-          sleep 5  # Wait for NGINX to start
-          curl -f http://localhost:8080 || exit 1
+          docker build -t cgi-nginx .
+          docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
