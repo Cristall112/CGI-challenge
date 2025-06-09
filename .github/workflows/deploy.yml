@@ -1,8 +1,5 @@
 name: Deploy NGINX
-
-on: 
-  push:
-    branches: [main]
+on: [push]
 
 jobs:
   deploy:
@@ -12,15 +9,13 @@ jobs:
 
       - name: Validate structure
         run: |
-          echo "Current structure:"
-          ls -R
+          echo "Contents:"
+          ls -la
           [ -f Dockerfile ] || exit 1
           [ -d html ] || exit 1
 
-      - name: Build
-        run: docker build -t cgi-nginx .
-
-      - name: Deploy
+      - name: Build and deploy
         run: |
+          docker build -t cgi-nginx .
           docker rm -f cgi-nginx || true
           docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
