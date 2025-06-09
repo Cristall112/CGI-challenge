@@ -1,21 +1,30 @@
-name: Deploy NGINX
+name: Auto Deploy NGINX
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+    - name: Checkout Repo
+      uses: actions/checkout@v3  # Updated to v3
 
-      - name: Verify files
-        run: |
-          echo "Current structure:"
-          ls -la
-          [ -f Dockerfile ] || { echo "ERROR: Missing Dockerfile"; exit 1; }
-          [ -d html ] || { echo "ERROR: Missing html/"; exit 1; }
+    - name: Verify files
+      run: |
+        echo "Current directory contents:"
+        ls -la
+        [ -f Dockerfile ] || { echo "ERROR: Dockerfile missing"; exit 1; }
+        [ -d html ] || { echo "ERROR: html directory missing"; exit 1; }
 
-      - name: Build and deploy
-        run: |
-          docker build -t cgi-nginx .
-          docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
+    - name: Build Docker image
+      run: docker build -t cgi-nginx .
+
+    - name: Run Docker container
+      run: |
+        docker stop cgi-nginx || true
+        docker rm cgi-nginx || true
+        docker run -d -p 8080:80 --name cgi-nginx cgi-nginx
+        
