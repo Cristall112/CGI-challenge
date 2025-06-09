@@ -1,4 +1,4 @@
-nname: Deploy NGINX
+name: Deploy NGINX
 
 on: [push]
 
@@ -10,10 +10,10 @@ jobs:
 
       - name: Verify files
         run: |
-          echo "Current directory structure:"
-          ls -R
-          [ -f Dockerfile ] || { echo "ERROR: Dockerfile missing"; exit 1; }
-          [ -d html ] || { echo "ERROR: html folder missing"; exit 1; }
+          echo "Current structure:"
+          ls -la
+          [ -f Dockerfile ] || { echo "ERROR: Missing Dockerfile"; exit 1; }
+          [ -d html ] || { echo "ERROR: Missing html/"; exit 1; }
 
       - name: Build and deploy
         run: |
