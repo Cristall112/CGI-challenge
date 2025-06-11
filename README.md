@@ -30,14 +30,14 @@ The challenge involved manually deploying a secure webserver, containerizing it,
 
 ---
 
-### ⚙️ Bonus II – CI/CD Pipeline
+###  Bonus II – CI/CD Pipeline
 - Configured **GitHub Actions** to automate Docker builds
 - Triggered pipeline on push to `main` branch
 - Pipeline builds the Docker image and verifies the setup
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 - **GCP** – VM provisioning
 - **NGINX** – Web server
